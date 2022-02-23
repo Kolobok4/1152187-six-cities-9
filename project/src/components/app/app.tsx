@@ -1,5 +1,5 @@
 import MainScreen from '../main-screen/main-screen';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import LoginScreen from '../login-screen/login-screen';
 import PrivateRoute from '../private-route/private-route';
@@ -8,16 +8,18 @@ import NotFoundScreen from '../not-found-screeen/not-found-screeen';
 import PropertyScreen from '../property-screen/property-screen';
 
 type AppScreenProps = {
-  rentCount: number;
+  rentCount: number,
+  isLoggedIn: boolean,
+  isFavorites: boolean,
 }
 
-function App({rentCount}: AppScreenProps): JSX.Element {
+function App({rentCount, isLoggedIn, isFavorites}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen rentCount={rentCount} />}
+          element={<MainScreen rentCount={rentCount} isLoggedIn={isLoggedIn}/>}
         />
         <Route
           path={AppRoute.Login}
@@ -25,13 +27,13 @@ function App({rentCount}: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<PropertyScreen />}
+          element={<PropertyScreen isLoggedIn={isLoggedIn} />}
         />
         <Route
-          path={AppRoute.Favorites}
+          path={AppRoute.Favorites }
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-              <FavoritesScreen />
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <FavoritesScreen isLoggedIn={isLoggedIn} isFavorites={isFavorites}/>
             </PrivateRoute>
           }
         />
@@ -45,5 +47,3 @@ function App({rentCount}: AppScreenProps): JSX.Element {
 }
 
 export default App;
-
-
